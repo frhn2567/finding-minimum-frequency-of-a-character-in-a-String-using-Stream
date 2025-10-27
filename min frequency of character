@@ -1,0 +1,45 @@
+import java.util.stream.*;
+import java.util.*;
+class Main {
+    public static void main(String[] args) {
+       
+       String str="banana applpee";
+       str=str.replaceAll("\\s+","");
+Optional<Map.Entry<Character, Long>> res= str.chars()
+         .mapToObj(ch->(char)ch)
+         .collect(Collectors.groupingBy(c->c,Collectors.counting())).entrySet()
+         .stream()
+         .min(Map.Entry.comparingByValue());
+         //min(Comparator.comparingLong(Map.Entry::getValue));
+         
+         if(res.isPresent())
+            System.out.println("Character with min frequency is : "+res.get());
+         else
+            System.out.println("no character found with min frequency");
+    }
+}
+---------------------for all min freq char----------------
+import java.util.*;
+import java.util.stream.*;
+
+class Main {
+    public static void main(String[] args) {
+        String str = "banana applpee";
+        str = str.replaceAll("\\s+", ""); // remove spaces
+
+        // Count frequencies
+        Map<Character, Long> freq = str.chars()
+            .mapToObj(ch -> (char) ch)
+            .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+
+        // Find minimum frequency
+        long minFreq = freq.values().stream().min(Long::compare).orElse(0L);
+
+        // Get all entries with that frequency
+        List<Map.Entry<Character, Long>> minEntries = freq.entrySet().stream()
+            .filter(e -> e.getValue() == minFreq)
+            .toList();
+
+        System.out.println("Characters with min frequency (" + minFreq + "): " + minEntries);
+    }
+}
